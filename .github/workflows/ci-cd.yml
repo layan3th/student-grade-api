@@ -25,23 +25,23 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # 3) Compile and run all JUnit tests
+      # 3) Compile and run all JUnit tests using Java 17
       - name: Build and test with Maven
         run: mvn --batch-mode clean verify
 
-      # 4) Run SonarCloud analysis
+      # 4) Switch to Java 21 for SonarCloud
+      - name: Set up JDK 21 for SonarCloud
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      # 5) Run SonarCloud analysis
       - name: SonarCloud Scan
         run: mvn --batch-mode sonar:sonar
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-      # 5) Log in to Docker Hub (only on push to main)
-      - name: Log in to Docker Hub
-        if: github.event_name == 'push'
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # 6) Build and push the Docker image
       - name: Build and push Docker image
