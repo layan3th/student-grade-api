@@ -33,7 +33,7 @@ jobs:
       - name: SonarQube Cloud scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn --batch-mode sonar:sonar
+        run: mvn --batch-mode sonar:sonar -Dsonar.projectKey=student-grade-api -Dsonar.organization=layan3th -Dsonar.host.url=https://sonarcloud.io
 
       # 5) Log in to Docker Hub (only on push to main)
       - name: Log in to Docker Hub
