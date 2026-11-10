@@ -44,6 +44,13 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # 6) Build and push the Docker image
+      - name: Log in to Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          username: layan3oth
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build and push Docker image
         if: github.event_name == 'push'
         uses: docker/build-push-action@v5
@@ -51,5 +58,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/student-grade-api:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/student-grade-api:${{ github.sha }}
+            layan3oth/student-grade-api:latest
+            layan3oth/student-grade-api:${{ github.sha }}
